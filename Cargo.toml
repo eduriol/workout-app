@@ -1,0 +1,7 @@
+[package]
+name = "workout-app"
+version = "0.1.0"
+authors = ["Eduardo Riol <eduriol@gmail.com>"]
+
+[dependencies]
+rocket = "0.4.4"
