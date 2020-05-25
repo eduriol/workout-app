@@ -1,8 +1,11 @@
 #![feature(proc_macro_hygiene, decl_macro)]
 
 #[macro_use] extern crate rocket;
+#[macro_use] extern crate rocket_contrib;
 
 #[cfg(test)] mod tests;
+
+use rocket_contrib::json::JsonValue;
 
 #[get("/")]
 pub fn hello() -> &'static str {
@@ -10,14 +13,23 @@ pub fn hello() -> &'static str {
 }
 
 #[get("/workout/<group>")]
-fn workout(group: String) -> Option<&'static str> {
+fn workout(group: String) -> Option<JsonValue> {
     match group.as_str() {
-        "legs" => Some("Squats: 4 x 5\nLunges: 3 x 12"),
-        "push" => Some("Barbell bench press: 4 x 5\nOverhead barbell press: 3 x 12"),
-        "pull" => Some("Deadlift: 4 x 5\nPull-ups: 3 x 8"),
-        "upper" => Some("Dumbbell bench press: 4 x 5\nOverhead dumbbell press: 3 x 12"),
-        "lower" => Some("Squats: 4 x 5\nLunges: 3 x 12"),
-        "full" => Some("Barbell bench press: 4 x 5\nOverhead barbell press: 3 x 12\nSquats: 4 x 5\nLunges: 3 x 12"),
+        "legs" => Some(json!({
+                "group": "legs",
+                "exercises": [
+                    {
+                        "name": "squats",
+                        "sets": 4,
+                        "reps": 5
+                    },
+                    {
+                        "name": "lunges",
+                        "sets": 3,
+                        "reps": 12
+                    }
+                ]
+            })),
         _ => None,
     }
 }

@@ -5,3 +5,4 @@ authors = ["Eduardo Riol <eduriol@gmail.com>"]
 
 [dependencies]
 rocket = "0.4.4"
+rocket_contrib = "0.4.4"
