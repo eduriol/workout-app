@@ -2,10 +2,25 @@
 
 #[macro_use] extern crate rocket;
 #[macro_use] extern crate rocket_contrib;
+#[macro_use] extern crate serde;
 
 #[cfg(test)] mod tests;
 
-use rocket_contrib::json::JsonValue;
+use rocket_contrib::json::Json;
+use serde::Serialize;
+
+#[derive(Serialize)]
+struct Exercise {
+    name: String,
+    sets: u8,
+    reps: u8,
+}
+
+#[derive(Serialize)]
+struct Workout {
+    group: String,
+    exercises: Vec<Exercise>,
+}
 
 #[get("/")]
 pub fn hello() -> &'static str {
@@ -13,23 +28,23 @@ pub fn hello() -> &'static str {
 }
 
 #[get("/workout/<group>")]
-fn workout(group: String) -> Option<JsonValue> {
+fn workout(group: String) -> Option<Json<Workout>> {
     match group.as_str() {
-        "legs" => Some(json!({
-                "group": "legs",
-                "exercises": [
-                    {
-                        "name": "squats",
-                        "sets": 4,
-                        "reps": 5
-                    },
-                    {
-                        "name": "lunges",
-                        "sets": 3,
-                        "reps": 12
-                    }
-                ]
-            })),
+        "legs" => Some(Json(Workout {
+            group: String::from("legs"),
+            exercises: vec![
+                Exercise {
+                    name: String::from("squats"),
+                    sets: 4,
+                    reps: 5,
+                },
+                Exercise {
+                    name: String::from("lunges"),
+                    sets: 3,
+                    reps: 12,
+                }
+            ],
+        })),
         _ => None,
     }
 }
