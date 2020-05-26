@@ -7,20 +7,9 @@
 #[cfg(test)] mod tests;
 
 use rocket_contrib::json::Json;
-use serde::Serialize;
 
-#[derive(Serialize)]
-struct Exercise {
-    name: String,
-    sets: u8,
-    reps: u8,
-}
-
-#[derive(Serialize)]
-struct Workout {
-    group: String,
-    exercises: Vec<Exercise>,
-}
+mod workout;
+use workout::{Workout, Exercise};
 
 #[get("/")]
 pub fn hello() -> &'static str {
