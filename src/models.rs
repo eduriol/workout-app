@@ -1,4 +1,4 @@
-use crate::schema::exercises;
+use crate::schema::{exercises, workouts};
 use diesel::pg::PgConnection;
 use diesel::*;
 use serde::Serialize;
@@ -17,5 +17,20 @@ impl Exercise {
             .order(exercises::id)
             .load::<Exercise>(connection)
             .expect("Unable to load exercises data.")
+    }
+}
+
+#[derive(Serialize, Queryable)]
+pub struct Workout {
+    pub id: i32,
+    pub muscular_group: String,
+}
+
+impl Workout {
+    pub fn read_all(connection: &PgConnection) -> Vec<Workout> {
+        workouts::table
+            .order(workouts::id)
+            .load::<Workout>(connection)
+            .expect("Unable to load workouts data.")
     }
 }

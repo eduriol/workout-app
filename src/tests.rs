@@ -22,3 +22,13 @@ fn get_all_exercises() {
     assert!(body.contains("squats"));
     assert!(body.contains("bench press"));
 }
+
+#[test]
+fn get_all_workouts() {
+    let client = Client::new(rocket()).expect("Failed to create test client");
+    let mut response = client.get("/workouts").header(ContentType::JSON).dispatch();
+    assert_eq!(response.status(), Status::Ok);
+    let body = response.body().unwrap().into_string().unwrap();
+    assert!(body.contains("legs"));
+    assert!(body.contains("upper"));
+}
