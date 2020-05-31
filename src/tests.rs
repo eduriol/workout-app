@@ -11,16 +11,10 @@ fn hello_workout_app() {
 }
 
 #[test]
-fn get_all_exercises() {
+fn get_unknown() {
     let client = Client::new(rocket()).expect("Failed to create test client");
-    let mut response = client
-        .get("/exercises")
-        .header(ContentType::JSON)
-        .dispatch();
-    assert_eq!(response.status(), Status::Ok);
-    let body = response.body().unwrap().into_string().unwrap();
-    assert!(body.contains("squats"));
-    assert!(body.contains("bench press"));
+    let response = client.get("/unknown").header(ContentType::JSON).dispatch();
+    assert_eq!(response.status(), Status::NotFound);
 }
 
 #[test]

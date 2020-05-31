@@ -17,16 +17,11 @@ mod tests;
 use rocket_contrib::json::JsonValue;
 
 mod models;
-use models::*;
+use models::Workout;
 
 #[get("/")]
 pub fn hello() -> &'static str {
     "Hello, workout app!"
-}
-
-#[get("/exercises")]
-fn exercises(connection: db::Connection) -> JsonValue {
-    json!(Exercise::read_all(&connection))
 }
 
 #[get("/workouts")]
@@ -37,7 +32,7 @@ fn workouts(connection: db::Connection) -> JsonValue {
 pub fn rocket() -> rocket::Rocket {
     rocket::ignite()
         .manage(db::connect())
-        .mount("/", routes![hello, exercises, workouts])
+        .mount("/", routes![hello, workouts])
 }
 
 fn main() {

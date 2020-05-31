@@ -13,15 +13,6 @@ pub struct Exercise {
     pub workout_id: Option<i32>,
 }
 
-impl Exercise {
-    pub fn read_all(connection: &PgConnection) -> Vec<Exercise> {
-        exercises::table
-            .order(exercises::id)
-            .load::<Exercise>(connection)
-            .expect("Unable to load exercises data.")
-    }
-}
-
 #[derive(Serialize, Queryable, Identifiable)]
 pub struct Workout {
     pub id: i32,
