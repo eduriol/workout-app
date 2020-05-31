@@ -1,6 +1,6 @@
-use rocket;
+use crate::rocket;
+use rocket::http::{ContentType, Status};
 use rocket::local::Client;
-use rocket::http::{Status, ContentType};
 
 #[test]
 fn hello_workout_app() {
@@ -11,17 +11,14 @@ fn hello_workout_app() {
 }
 
 #[test]
-fn get_legs_workout() {
+fn get_all_exercises() {
     let client = Client::new(rocket()).expect("Failed to create test client");
-    let mut response = client.get("/workout/legs").header(ContentType::JSON).dispatch();
+    let mut response = client
+        .get("/exercises")
+        .header(ContentType::JSON)
+        .dispatch();
     assert_eq!(response.status(), Status::Ok);
     let body = response.body().unwrap().into_string().unwrap();
     assert!(body.contains("squats"));
-}
-
-#[test]
-fn get_unknown_workout() {
-    let client = Client::new(rocket()).expect("Failed to create test client");
-    let response = client.get("/workout/unknown").header(ContentType::JSON).dispatch();
-    assert_eq!(response.status(), Status::NotFound);
+    assert!(body.contains("bench press"));
 }

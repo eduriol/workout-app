@@ -1,45 +1,38 @@
 #![feature(proc_macro_hygiene, decl_macro)]
 
-#[macro_use] extern crate rocket;
-#[macro_use] extern crate rocket_contrib;
-#[macro_use] extern crate serde;
+#[macro_use]
+extern crate rocket;
+#[macro_use]
+extern crate rocket_contrib;
+#[macro_use]
+extern crate diesel;
+extern crate serde;
 
-#[cfg(test)] mod tests;
+pub mod schema;
 
-use rocket_contrib::json::Json;
+mod db;
+#[cfg(test)]
+mod tests;
 
-mod workout;
-use workout::{Workout, Exercise};
+use rocket_contrib::json::JsonValue;
+
+mod models;
+use models::Exercise;
 
 #[get("/")]
 pub fn hello() -> &'static str {
     "Hello, workout app!"
 }
 
-#[get("/workout/<group>")]
-fn workout(group: String) -> Option<Json<Workout>> {
-    match group.as_str() {
-        "legs" => Some(Json(Workout {
-            group: String::from("legs"),
-            exercises: vec![
-                Exercise {
-                    name: String::from("squats"),
-                    sets: 4,
-                    reps: 5,
-                },
-                Exercise {
-                    name: String::from("lunges"),
-                    sets: 3,
-                    reps: 12,
-                }
-            ],
-        })),
-        _ => None,
-    }
+#[get("/exercises")]
+fn exercises(connection: db::Connection) -> JsonValue {
+    json!(Exercise::read_all(&connection))
 }
 
 pub fn rocket() -> rocket::Rocket {
-    rocket::ignite().mount("/", routes![hello, workout])
+    rocket::ignite()
+        .manage(db::connect())
+        .mount("/", routes![hello, exercises])
 }
 
 fn main() {
