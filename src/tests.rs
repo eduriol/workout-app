@@ -30,5 +30,7 @@ fn get_all_workouts() {
     assert_eq!(response.status(), Status::Ok);
     let body = response.body().unwrap().into_string().unwrap();
     assert!(body.contains("legs"));
+    assert!(body.contains("squats"));
     assert!(body.contains("upper"));
+    assert!(body.contains("bench press"));
 }
