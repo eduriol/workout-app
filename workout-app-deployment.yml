@@ -19,4 +19,4 @@ spec:
     spec:
       containers:
         - name: workout-app
-          image: workout-app:latest
+          image: eduardoriol/workout-app:latest
