@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: workout-app-deployment
+  labels:
+    app: workout-app
+    type: back-end
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      type: back-end
+  template:
+    metadata:
+      name: workout-app-pod
+      labels:
+        app: workout-app
+        type: back-end
+    spec:
+      containers:
+        - name: workout-app
+          image: workout-app:latest
