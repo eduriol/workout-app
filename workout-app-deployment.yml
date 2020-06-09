@@ -17,8 +17,32 @@ spec:
         app: workout-app
         type: back-end
     spec:
+      serviceAccountName: workout-app-ksa
       containers:
         - name: workout-app
           image: eduardoriol/workout-app:latest
+          env:
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: db_user
+            - name: DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: db_password
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: db_name
+        - name: cloud-sql-proxy
+          image: gcr.io/cloudsql-docker/gce-proxy:1.17
+          command:
+            - "/cloud_sql_proxy"
+            - "-instances=tidy-federation-279320:europe-west6:workouts=tcp:5432"
+          securityContext:
+            runAsUser: 65532
       imagePullSecrets:
         - name: dockerhub-credential
