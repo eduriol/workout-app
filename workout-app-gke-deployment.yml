@@ -1,3 +1,4 @@
+# This deployment file is for creating the k8s deployment in Google Kubernetes Engine
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -21,6 +22,7 @@ spec:
       containers:
         - name: workout-app
           image: eduardoriol/workout-app:latest
+          # These environment variables take the DB secrets in GKE cluster
           env:
             - name: DB_USER
               valueFrom:
@@ -37,6 +39,7 @@ spec:
                 secretKeyRef:
                   name: db-secret
                   key: db_name
+        # This container is the proxy that allows connection with Cloud SQL DB
         - name: cloud-sql-proxy
           image: gcr.io/cloudsql-docker/gce-proxy:1.17
           command:
@@ -44,5 +47,6 @@ spec:
             - "-instances=tidy-federation-279320:europe-west6:workouts=tcp:5432"
           securityContext:
             runAsUser: 65532
+      # This takes the secret to login to the Dockerhub and pull the private image
       imagePullSecrets:
         - name: dockerhub-credential

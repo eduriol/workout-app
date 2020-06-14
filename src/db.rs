@@ -8,12 +8,18 @@ use std::ops::Deref;
 // An alias to the type for a pool of Diesel Postgres Connection
 pub type PgPool = Pool<ConnectionManager<PgConnection>>;
 
-// The URL to the database, set via the `DATABASE_URL` environment variable.
-static DATABASE_URL: &str = env!("DATABASE_URL");
-
 /// Initialize the database pool.
 pub fn connect() -> PgPool {
-    let manager = ConnectionManager::<PgConnection>::new(DATABASE_URL);
+    let manager = ConnectionManager::<PgConnection>::new(
+        format!(
+            "postgres://{}:{}@{}/{}",
+            env!("DB_USER"),
+            env!("DB_PASS"),
+            env!("DB_HOST"),
+            env!("DB_NAME"),
+        )
+        .as_str(),
+    );
     Pool::new(manager).expect("Failed to create pool")
 }
 

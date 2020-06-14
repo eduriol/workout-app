@@ -3,9 +3,13 @@ FROM rust:latest
 WORKDIR /usr/src/app
 COPY . .
 
-ARG database="postgres://postgres:password@host.docker.internal/workouts"
+ENV DB_USER="postgres"
 
-ENV DATABASE_URL=$database
+ENV DB_PASS="password"
+
+ENV DB_HOST="host.docker.internal"
+
+ENV DB_NAME="workouts"
 
 RUN rustup default nightly
 
