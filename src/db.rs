@@ -4,19 +4,24 @@ use rocket::http::Status;
 use rocket::request::{self, FromRequest};
 use rocket::{Outcome, Request, State};
 use std::ops::Deref;
+use std::env;
 
 // An alias to the type for a pool of Diesel Postgres Connection
 pub type PgPool = Pool<ConnectionManager<PgConnection>>;
 
 /// Initialize the database pool.
 pub fn connect() -> PgPool {
+    let db_user= env::var("DB_USER").unwrap_or(String::from("postgres"));
+    let db_pass= env::var("DB_PASS").unwrap_or(String::from("password"));
+    let db_host= env::var("DB_HOST").unwrap_or(String::from("localhost"));
+    let db_name= env::var("DB_NAME").unwrap_or(String::from("workouts"));
     let manager = ConnectionManager::<PgConnection>::new(
         format!(
             "postgres://{}:{}@{}/{}",
-            env!("DB_USER"),
-            env!("DB_PASS"),
-            env!("DB_HOST"),
-            env!("DB_NAME"),
+            db_user,
+            db_pass,
+            db_host,
+            db_name,
         )
         .as_str(),
     );
