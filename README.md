@@ -24,7 +24,7 @@ pg_dump -U <username> -h <database_host> -a -T public.__diesel_schema_migrations
 ```
 To import this data into your database, use the following command:
 ```
-psql -U <username> -d <database_name> -a -f example_data.sql
+psql -U <username> -d <database_name> -h <database_host> -a -f example_data.sql
 ```
 ## Setting up
 ### Run the application
