@@ -1,9 +1,8 @@
 # Workout application
-## Setting up
-### Requirements
+## Requirements
 - [Rust](https://www.rust-lang.org/tools/install) nightly release.
 - [PostgreSQL](https://www.postgresql.org/) 12+ database.
-### Database
+## Database
 Workout application needs to connect to an existing PostgreSQL database.  
 For the application to be able to connect to the database, create the following environment variables in your Operating System:
 ```
@@ -16,6 +15,18 @@ If you don't specify any environment variable the application will try to connec
 ```
 postgres://postgres:password@localhost/workouts
 ```
+### Example deta
+For development and debugging purposes, a *example_data.sql* file is provided.  
+Workout app uses [pg_dump](https://www.postgresql.org/docs/current/app-pgdump.html) to generate this file.  
+The file is generated with the following command:
+```
+pg_dump -U <username> -h <database_host> -a -T public.__diesel_schema_migrations <database_name> >> example_data.sql
+```
+To import this data into your database, use the following command:
+```
+psql -U <username> -d <database_name> -a -f example_data.sql
+```
+## Setting up
 ### Run the application
 As usual, first step is cloning the repo :)
 ```
