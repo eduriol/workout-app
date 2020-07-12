@@ -3,8 +3,9 @@ table! {
         id -> Int4,
         name -> Varchar,
         sets -> Int4,
-        reps -> Int4,
+        max_reps -> Int4,
         workout_id -> Nullable<Int4>,
+        min_reps -> Int4,
     }
 }
 

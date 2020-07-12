@@ -26,4 +26,6 @@ fn get_all_workouts() {
     assert!(body.contains("squats"));
     assert!(body.contains("upper"));
     assert!(body.contains("bench press"));
+    assert!(body.contains("min_reps"));
+    assert!(body.contains("max_reps"));
 }

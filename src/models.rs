@@ -9,8 +9,9 @@ pub struct Exercise {
     pub id: i32,
     pub name: String,
     pub sets: i32,
-    pub reps: i32,
+    pub max_reps: i32,
     pub workout_id: Option<i32>,
+    pub min_reps: i32,
 }
 
 #[derive(Serialize, Queryable, Identifiable)]
