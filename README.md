@@ -2,6 +2,7 @@
 ## Requirements
 - [Rust](https://www.rust-lang.org/tools/install) nightly release.
 - [PostgreSQL](https://www.postgresql.org/) 12+ database.
+- [Diesel CLI](http://diesel.rs/guides/getting-started/)
 ## Database
 Workout application needs to connect to an existing PostgreSQL database.  
 For the application to be able to connect to the database, create the following environment variables in your Operating System:
@@ -14,6 +15,11 @@ export DB_NAME=<database_name>
 If you don't specify any environment variable the application will try to connect with the following connection string:
 ```
 postgres://postgres:password@localhost/workouts
+```
+### Setup database
+After you have created the required PostgreSQL database, you need to import the latest schema version with the following command:
+```
+diesel migration run --database-url=postgres://<username>:<password>@<database_host>/<database_name>
 ```
 ### Example data
 For development and debugging purposes, a *example_data.sql* file is provided.  
