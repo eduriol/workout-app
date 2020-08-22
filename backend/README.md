@@ -1,4 +1,4 @@
-# Workout application
+# Workout app backend
 ## Requirements
 - [Rust](https://www.rust-lang.org/tools/install) nightly release.
 - [PostgreSQL](https://www.postgresql.org/) 12+ database.
@@ -36,7 +36,7 @@ psql -U <username> -d <database_name> -h <database_host> -a -f example_data.sql
 As usual, first step is cloning the repo :)
 ```
 git clone https://github.com/eduriol/workout-app.git
-cd workout-app
+cd workout-app/backend
 ```
 ### Local execution
 ```
@@ -46,12 +46,12 @@ And then access http://localhost:8000 to see the Workout application greeting.
 ### Docker execution
 #### Build Docker image
 ```
-docker build --tag="workout-app:latest" .
+docker build --tag="workout-backend:latest" .
 ```
 If you use Docker Desktop for Mac, see note in *Dockerfile*.
 #### Run Docker image
 ```
-docker run -p 8000:8000 -it workout-app:latest
+docker run -p 8000:8000 -it workout-backend:latest
 ```
 And then access http://localhost:8000 to see the Workout application greeting.
 ### Google Kubernetes Engine deployment

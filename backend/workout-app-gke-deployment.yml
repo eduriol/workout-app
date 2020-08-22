@@ -2,9 +2,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: workout-app-deployment
+  name: workout-backend-deployment
   labels:
-    app: workout-app
+    app: workout-backend
     type: back-end
 spec:
   replicas: 3
@@ -13,15 +13,15 @@ spec:
       type: back-end
   template:
     metadata:
-      name: workout-app-pod
+      name: workout-backend-pod
       labels:
-        app: workout-app
+        app: workout-backend
         type: back-end
     spec:
-      serviceAccountName: workout-app-ksa
+      serviceAccountName: workout-backend-ksa
       containers:
-        - name: workout-app
-          image: eduardoriol/workout-app:latest
+        - name: workout-backend
+          image: eduardoriol/workout-backend:latest
           # These environment variables take the DB secrets in GKE cluster
           env:
             - name: DB_USER

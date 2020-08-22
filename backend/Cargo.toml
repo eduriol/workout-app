@@ -1,5 +1,5 @@
 [package]
-name = "workout-app"
+name = "workout-backend"
 version = "0.1.0"
 authors = ["Eduardo Riol <eduriol@gmail.com>"]
 edition = "2018"
