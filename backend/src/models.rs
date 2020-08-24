@@ -20,8 +20,10 @@ pub struct Workout {
     pub muscular_group: String,
 }
 
+type WorkoutList = Vec<(Workout, Vec<Exercise>)>;
+
 impl Workout {
-    pub fn read_all(connection: &PgConnection) -> Vec<(Workout, Vec<Exercise>)> {
+    pub fn read_all(connection: &PgConnection) -> WorkoutList {
         let workouts = workouts::table
             .order(workouts::id)
             .load::<Workout>(connection)
