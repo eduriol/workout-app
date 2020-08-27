@@ -60,13 +60,22 @@ And then access http://localhost:8000 to see the Workout application greeting.
 #### Google Kubernetes Engine deployment
 The file *workout-app-gke-deployment.yml* contains the specification to deploy the application in [GKE](https://cloud.google.com/kubernetes-engine).  
 Most of the content of the file is common Kubernetes configuration, but for information regarding more advanced stuff like the usage of database secrets as environment variables, set-up of service account and the proxy container, read [Connecting from Google Kubernetes Engine](https://cloud.google.com/sql/docs/mysql/connect-kubernetes-engine).
+### Testing the backend
+First run the setup_testing_db.sh script, that will create the testing database, its schema and insert data into that it.  
+The script expects that your DB has a user 'postgres' with password 'password':
+```
+./setup_testing_db.sh
+```
+After that you can safely run the tests:
+```
+cargo test
+```
 ## Workout app frontend
 ### Requirements
 - [Rust](https://www.rust-lang.org/tools/install)
 - [wasm-pack](https://rustwasm.github.io/wasm-pack/installer/)  
 
 By default, the Workout frontend expects the Workout backend to be running on http://localhost:8000.
-
 ### Run the frontend
 As usual, first step is cloning the repo :)
 ```

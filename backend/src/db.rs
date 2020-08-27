@@ -1,3 +1,4 @@
+use crate::RocketSetup;
 use diesel::pg::PgConnection;
 use diesel::r2d2::{ConnectionManager, Pool, PooledConnection};
 use rocket::http::Status;
@@ -10,15 +11,24 @@ use std::ops::Deref;
 pub type PgPool = Pool<ConnectionManager<PgConnection>>;
 
 /// Initialize the database pool.
-pub fn connect() -> PgPool {
-    let db_user = env::var("DB_USER").unwrap_or(String::from("postgres"));
-    let db_pass = env::var("DB_PASS").unwrap_or(String::from("password"));
-    let db_host = env::var("DB_HOST").unwrap_or(String::from("localhost"));
-    let db_name = env::var("DB_NAME").unwrap_or(String::from("workouts"));
-    let manager = ConnectionManager::<PgConnection>::new(
-        format!("postgres://{}:{}@{}/{}", db_user, db_pass, db_host, db_name,).as_str(),
-    );
-    Pool::new(manager).expect("Failed to create pool")
+pub fn connect(option: RocketSetup) -> PgPool {
+    match option {
+        RocketSetup::Running => {
+            let db_user = env::var("DB_USER").unwrap_or(String::from("postgres"));
+            let db_pass = env::var("DB_PASS").unwrap_or(String::from("password"));
+            let db_host = env::var("DB_HOST").unwrap_or(String::from("localhost"));
+            let db_name = env::var("DB_NAME").unwrap_or(String::from("workouts"));
+            let manager = ConnectionManager::<PgConnection>::new(
+                format!("postgres://{}:{}@{}/{}", db_user, db_pass, db_host, db_name, ).as_str(),
+            );
+            Pool::new(manager).expect("Failed to create pool")
+        },
+        RocketSetup::Testing => {
+            let manager = ConnectionManager::<PgConnection>::new(
+                "postgres://postgres:password@localhost/testing_workouts");
+            Pool::new(manager).expect("Failed to create pool")
+        },
+}
 }
 
 // Connection request guard type: a wrapper around an r2d2 pooled connection.

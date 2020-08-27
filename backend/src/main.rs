@@ -57,14 +57,19 @@ fn workouts(connection: db::Connection) -> JsonValue {
     json!(Workout::read_all(&connection))
 }
 
-pub fn rocket() -> rocket::Rocket {
+pub enum RocketSetup {
+    Running,
+    Testing,
+}
+
+pub fn rocket(option: RocketSetup) -> rocket::Rocket {
     rocket::ignite()
-        .manage(db::connect())
+        .manage(db::connect(option))
         .mount("/", routes![hello, workouts])
         .attach(make_cors())
 }
 
 fn main() -> Result<(), Error> {
-    rocket().launch();
+    rocket(RocketSetup::Running).launch();
     Ok(())
 }
